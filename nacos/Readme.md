@@ -260,6 +260,17 @@ cmd startup.cmd -m standalone
 
 - 初始化 Seata 配置
 
+```agsl
+1.D:\DevTools\seata-server-1.6.1\seata\script\config-center\nacos\nacos-config.sh
+2.我们运行nacos-config.sh,这时候我们配置的nacos-config.txt的内容已经被发送到nacos中了详细如图
+3.nacos-config.txt 配置文件的位置 在 https://github.com/seata/seata/blob/develop/script/config-center/config.txt
+4. windows 平台可以执行 python nacos-config.py  -h localhost
+print('python nacos-config.py [-h host] [-p port] [-t tenant] [-g group] [-u username] [-w password]')
+D:\DevTools\seata-server-1.6.1\seata\script\config-center\nacos>python nacos-config.py -h localhost    
+
+```
+
+
 进入到 Seata-Server 解压目录 conf
 文件夹下，确认 [nacos-config.txt](https://github.com/seata/seata/blob/develop/server/src/main/resources/nacos-config.txt)
 的配置值（一般不需要修改），确认完成后运行 [nacos-config.sh](https://github.com/seata/seata/blob/develop/server/src/main/resources/nacos-config.sh)
@@ -281,6 +292,8 @@ sh nacos-config.sh localhost
 Group=SEATA_GROUP 的配置项。
 
 <img src="https://github.com/seata/seata-samples/blob/master/doc/img/nacos-1.png"  height="300" width="800">
+
+![img.png](img.png)
 
 - 修改 Seata-server 服务注册方式为 nacos
 
@@ -318,6 +331,19 @@ config {
 **nacos.namespace**: Nacos 注册和配置隔离 namespace   
 **nacos.cluster**: 注册服务的集群名称
 
+```agsl
+
+1. 新版本中 seata-server的conf目录下已经已经没有了registry.conf 文件， application.yml文件中默认配置了使用
+file 作为配置中心和注册中心。 如果需要使用nacos作为配置中心，可以参考 application-exmaple.yml进行修改。
+
+2.按照nacos官方文档配置启动nacos,默认是不需要登录认证的的，这样会导致nacos配置中心对外直接暴露。而启用鉴权之后，需要在使用用户名和密码登录之后，才能正常使用nacos。
+开启鉴权之前，application.properties中的配置信息为：
+nacos.core.auth.enabled=false
+
+nacos配置中心默认情况下没有开启登录验证，因此我们不需要配置nacos的用户名和密码
+
+```
+
 - 运行 Seata-server
 
 **Linux/Unix/Mac**
@@ -344,6 +370,8 @@ sh seata-server.sh -p 8091 -m file
 
 <img src="https://github.com/seata/seata-samples/blob/master/doc/img/nacos-2.png"  height="300" width="800">
 
+![img_1.png](img_1.png)
+
 #### Step 8 启动微服务并测试
 
 - 修改业务客户端发现注册方式为 nacos   
@@ -360,6 +388,7 @@ sh seata-server.sh -p 8091 -m file
 
 <img src="https://github.com/seata/seata-samples/blob/master/doc/img/nacos-3.png"  height="300" width="800">
 
+![img_2.png](img_2.png)
 -
 
 启动 [DubboBusinessTester](https://github.com/seata/seata-samples/blob/master/nacos/src/main/java/io/seata/samples/nacos/starter/DubboBusinessTester.java)

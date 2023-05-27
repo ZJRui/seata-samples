@@ -47,6 +47,9 @@ public class StockServiceImpl implements StockService {
         LOGGER.info("Deducting inventory SQL: update stock_tbl set count = count - {} where commodity_code = {}", count,
             commodityCode);
 
+        /**
+         * 扣减库存
+         */
         jdbcTemplate.update("update stock_tbl set count = count - ? where commodity_code = ?",
             new Object[] {count, commodityCode});
         LOGGER.info("Stock Service End ... ");

@@ -71,6 +71,13 @@
 
     <bean class="io.seata.spring.annotation.GlobalTransactionScanner">
         <constructor-arg value="dubbo-demo-account-service"/>
+        <!--
+         1.txServiceGroup参考《事务分组与高可用.pdf Seata 事务分组.pdf》
+         2.在 "D:\DevTools\seata-server-1.6.1\seata\script\config-center\config.txt" 配置文件中
+         默认情况下仅仅 定义了service.vgroupMapping.default_tx_group=default
+         也就是仅仅定义了  default_tx_group 这个名称的逻辑分组， 没有定义my_test_tx_group 逻辑分组。
+         所以我们在config.txt中增加了 service.vgroupMapping.my_test_tx_group=default，并将config.txt同步到nacos配置中心
+        -->
         <constructor-arg value="my_test_tx_group"/>
     </bean>
 </beans>

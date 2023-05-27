@@ -52,12 +52,13 @@ public class ApplicationKeeper {
                     LOGGER.error("Failed to close ApplicationContext", e);
                 }
 
-                try {
-                    LOCK.lock();
-                    STOP.signal();
-                } finally {
-                    LOCK.unlock();
-                }
+                // try {
+                //     LOCK.lock();
+                //     System.out.println("获取到lock锁");
+                //     STOP.signal();
+                // } finally {
+                //     LOCK.unlock();
+                // }
             }
         }));
     }
@@ -69,10 +70,13 @@ public class ApplicationKeeper {
         synchronized (LOCK) {
             try {
                 LOGGER.info("Application is keep running ... ");
+                //之所以wait的原因是 系统中 没有其他 前台线程了，所以必须要有一个前台线程，否则程序就会退出
+                //一般ReentrantLock的使用 是创建多个Conditon，然后使用Conditon对象的 wait和notify 方法，而不会直接使用ReentrantLock的wait
                 LOCK.wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            System.out.println("keep method end，结束keep方法");
         }
     }
 }

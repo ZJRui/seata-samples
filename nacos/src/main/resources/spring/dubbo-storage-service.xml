@@ -63,6 +63,8 @@
     <!--support nacos-->
     <dubbo:registry address="nacos://127.0.0.1:8848?username=nacos&amp;password=nacos"/>
     <dubbo:protocol name="dubbo" port="20882"/>
+
+    <!--发布服务-->
     <dubbo:service interface="io.seata.samples.nacos.service.StockService" ref="service" timeout="10000"/>
 
     <bean id="service" class="io.seata.samples.nacos.service.impl.StockServiceImpl">
